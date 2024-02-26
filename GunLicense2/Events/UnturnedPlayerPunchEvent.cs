@@ -26,7 +26,7 @@ namespace GunLicense.Events
         public async Task HandleEventAsync(object sender, UnturnedPlayerPunchEvent @event)
         {
             Player player = @event.Player.Player;
-            Physics.Raycast(player.transform.position, player.look.aim.forward, out var hitInfo, 5f, RayMasks.BARRICADE);
+            Physics.Raycast(player.look.aim.position, player.look.aim.forward, out var hitInfo, 10f, RayMasks.BARRICADE);
             if (hitInfo.transform == null)
             {
                 m_Logger.LogInformation("Nothing hit");
@@ -38,11 +38,12 @@ namespace GunLicense.Events
                 m_Logger.LogInformation("hitInfo.transform was null");
                 return;
             }
-
-            //if (drop.GetServersideData().point == notePostion)
-            //{
-            //
-            //}
+            if (drop.instanceID == 181)
+            {
+                Barricade barricade = new Barricade(1408);
+                UnityEngine.Vector3 point = new UnityEngine.Vector3(-100, 50, -100);
+                BarricadeManager.dropBarricade(barricade, player.transform, point, 0, 0, 0, 0, 0);
+            }
 
             await @event.Player.PrintMessageAsync($"Has golpeado: {drop.instanceID}");
         }

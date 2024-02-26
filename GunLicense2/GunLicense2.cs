@@ -11,7 +11,6 @@ using OpenMod.Unturned.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NuGet.Packaging.Licenses;
 
 // For more, visit https://openmod.github.io/openmod-docs/devdoc/guides/getting-started.html
 
@@ -55,7 +54,7 @@ namespace GunLicense
             var data = await m_DataStore.LoadAsync<LicenseData>(OwnersKey);
             foreach (var target in data.TargetPositions)
             {
-                m_Logger.LogInformation($"{target.X} {target.Y} {target.Z}");
+                m_Logger.LogInformation($"{target.x} {target.y} {target.z}");
             }
             await m_DataStore.SaveAsync<LicenseData>(OwnersKey, data);
         }
@@ -68,14 +67,21 @@ namespace GunLicense
 
         private async Task SeedData()
         {
-            // create default data
-            await m_DataStore.SaveAsync(OwnersKey, new LicenseData
+            // Create default data
+            List<UnityEngine.Vector3> targetPositions = new List<UnityEngine.Vector3>
             {
-                NotePosition = new Vector3 { X = 0.0f, Y = 0.0f, Z = 0.0f },
-                TargetPositions = new List<Vector3>{
-                new Vector3 { X = 1.0f, Y = 1.0f, Z = 1.0f },
-                new Vector3 { X = 2.0f, Y = 2.0f, Z = 2.0f }}
-            });
+                new UnityEngine.Vector3(-102, 50, -100),
+                new UnityEngine.Vector3(-104, 50, -100),
+                new UnityEngine.Vector3(-105, 50, -100)
+            };
+
+            LicenseData defaultData = new LicenseData
+            {
+                NotePosition = new UnityEngine.Vector3(-100f, 50f, -100f),
+                TargetPositions = targetPositions
+            };
+
+            await m_DataStore.SaveAsync(OwnersKey, defaultData);
         }
     }
 }
