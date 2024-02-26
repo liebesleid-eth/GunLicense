@@ -70,10 +70,10 @@ namespace GunLicense
             // create default data
             await m_DataStore.SaveAsync(OwnersKey, new LicenseData
             {
-                NotePosition = new Vector3 { X = -100f, Y = 50f, Z = -100f },
-                TargetPositions = new List<Vector3>{
-                new Vector3 { X = 1.0f, Y = 1.0f, Z = 1.0f },
-                new Vector3 { X = 2.0f, Y = 2.0f, Z = 2.0f }}
+                NotePosition = new Transformation { X = -100f, Y = 50f, Z = -100f },
+                TargetPositions = new List<Transformation>{
+                new Transformation { X = 1.0f, Y = 1.0f, Z = 1.0f },
+                new Transformation { X = 2.0f, Y = 2.0f, Z = 2.0f }}
             });
         }
     }

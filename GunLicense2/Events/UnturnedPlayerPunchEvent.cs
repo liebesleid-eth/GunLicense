@@ -11,6 +11,7 @@ using UnityEngine;
 using OpenMod.Extensions.Games.Abstractions.Transforms;
 using Microsoft.Extensions.Configuration;
 using OpenMod.API.Persistence;
+using OpenMod.Core.Helpers;
 
 namespace GunLicense.Events
 {
@@ -29,8 +30,8 @@ namespace GunLicense.Events
         public async Task HandleEventAsync(object sender, UnturnedPlayerPunchEvent @event)
         {
             var data = await m_dataStore.LoadAsync<LicenseData>(MyOpenModPlugin.OwnersKey);
-            Vector3 dataa = data.NotePosition;
-            UnityEngine.Vector3 point2 = new UnityEngine.Vector3(dataa.X, dataa.Y, dataa.Z);
+            Transformation dataa = data.NotePosition;
+            // UnityEngine.Vector3 point = new UnityEngine.Vector3(dataa.X, dataa.Y, dataa.Z);
 
             Player player = @event.Player.Player;
             Physics.Raycast(player.look.aim.position, player.look.aim.forward, out var hitInfo, 10f, RayMasks.BARRICADE);
@@ -48,9 +49,13 @@ namespace GunLicense.Events
             if (drop.instanceID == 181)
             {
                 Barricade barricade = new Barricade(1408);
-                UnityEngine.Vector3 point = new UnityEngine.Vector3(-100, 50, -100);
-                BarricadeManager.dropBarricade(barricade, player.transform, point2, 0, 0, 0, 0, 0);
-                @event.Player.PrintMessageAsync($"Has golpeado: {point2}");
+                foreach (Transformation position in data.TargetPositions)
+                {
+                    UnityEngine.Vector3 point = new UnityEngine.Vector3(position.X, position.Y, position.Z);
+                    Quaternion Rotation = Quaternion.Euler(0, position.rotation, 0) * Quaternion.Euler(270f, 0f, 180f);
+                    BarricadeManager.dropNonPlantedBarricade(barricade, point, Rotation, 0, 0);
+                    @event.Player.PrintMessageAsync($"Spawned: {point}");
+                }
             }
 
             await @event.Player.PrintMessageAsync($"Has golpeado: {drop.instanceID}");

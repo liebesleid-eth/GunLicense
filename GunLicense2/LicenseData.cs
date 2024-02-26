@@ -8,14 +8,15 @@ namespace GunLicense
 {
     public class LicenseData
     {
-        public Vector3 NotePosition { get; set; }
-        public List<Vector3> TargetPositions { get; set; }
+        public Transformation NotePosition { get; set; }
+        public List<Transformation> TargetPositions { get; set; }
     }
 
-    public class Vector3
+    public class Transformation
     {
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
+        public float rotation { get; set; }
     }
 }
