@@ -54,9 +54,9 @@ namespace GunLicense
             var data = await m_DataStore.LoadAsync<LicenseData>(OwnersKey);
             foreach (var target in data.TargetPositions)
             {
-                m_Logger.LogInformation($"{target.x} {target.y} {target.z}");
+                m_Logger.LogInformation($"{target.X} {target.Y} {target.Z}");
             }
-            await m_DataStore.SaveAsync<LicenseData>(OwnersKey, data);
+            await m_DataStore.SaveAsync(OwnersKey, data);
         }
 
         protected override async UniTask OnUnloadAsync()
@@ -67,21 +67,14 @@ namespace GunLicense
 
         private async Task SeedData()
         {
-            // Create default data
-            List<UnityEngine.Vector3> targetPositions = new List<UnityEngine.Vector3>
+            // create default data
+            await m_DataStore.SaveAsync(OwnersKey, new LicenseData
             {
-                new UnityEngine.Vector3(-102, 50, -100),
-                new UnityEngine.Vector3(-104, 50, -100),
-                new UnityEngine.Vector3(-105, 50, -100)
-            };
-
-            LicenseData defaultData = new LicenseData
-            {
-                NotePosition = new UnityEngine.Vector3(-100f, 50f, -100f),
-                TargetPositions = targetPositions
-            };
-
-            await m_DataStore.SaveAsync(OwnersKey, defaultData);
+                NotePosition = new Vector3 { X = -100f, Y = 50f, Z = -100f },
+                TargetPositions = new List<Vector3>{
+                new Vector3 { X = 1.0f, Y = 1.0f, Z = 1.0f },
+                new Vector3 { X = 2.0f, Y = 2.0f, Z = 2.0f }}
+            });
         }
     }
 }

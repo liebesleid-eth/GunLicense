@@ -8,7 +8,14 @@ namespace GunLicense
 {
     public class LicenseData
     {
-        public UnityEngine.Vector3 NotePosition { get; set; }
-        public List<UnityEngine.Vector3> TargetPositions { get; set; }
+        public Vector3 NotePosition { get; set; }
+        public List<Vector3> TargetPositions { get; set; }
+    }
+
+    public class Vector3
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
     }
 }
